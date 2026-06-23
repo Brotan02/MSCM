@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Skin Editor</title>
+<script src="https://unpkg.com/skinview3d/bundles/skinview3d.bundle.js"></script>
+</head>
+
+<body style="background:#111;color:white;text-align:center">
+
+<h1>🎨 Выбор скина</h1>
+
+<input id="uuid" placeholder="UUID"><br><br>
+
+<input type="file" id="file"><br><br>
+
+<button onclick="preview()">Предпросмотр</button>
+<button onclick="upload()">Загрузить</button>
+
+<br><br>
+
+<canvas id="viewer" width="300" height="300"></canvas>
+
+<script>
+
+let currentFile
+
+function preview(){
+
+const f = file.files[0]
+currentFile = f
+
+const url = URL.createObjectURL(f)
+
+new skinview3d.SkinViewer({
+canvas: document.getElementById("viewer"),
+width:300,
+height:300,
+skin:url
+})
+
+}
+
+async function upload(){
+
+const form = new FormData()
+form.append("uuid", uuid.value)
+form.append("skin", currentFile)
+
+await fetch("/uploadSkin",{
+method:"POST",
+body:form
+})
+
+alert("Скин загружен!")
+
+}
+
+</script>
+
+</body>
+</html>

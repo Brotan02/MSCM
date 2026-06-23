@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Профиль игрока</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+.profile-card{
+max-width:800px;
+margin:auto;
+padding:30px;
+text-align:center;
+}
+
+.avatar{
+width:180px;
+height:180px;
+border-radius:20px;
+margin-bottom:20px;
+box-shadow:0 0 20px rgba(0,170,255,.5);
+}
+
+.info{
+font-size:22px;
+margin:15px;
+}
+
+.big-btn{
+display:block;
+width:320px;
+margin:12px auto;
+padding:15px;
+font-size:20px;
+cursor:pointer;
+border:none;
+border-radius:12px;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="profile-card">
+
+<h1>👤 Профиль игрока</h1>
+
+<img
+id="avatar"
+class="avatar"
+src="https://mc-heads.net/avatar/Steve">
+
+<div class="info">
+📛 Ник:
+<span id="username">-</span>
+</div>
+
+<div class="info">
+🆔 UUID:
+<span id="uuid">-</span>
+</div>
+
+<div class="info">
+🧥 Плащ:
+<span id="cape">Проверяется...</span>
+</div>
+
+<button
+class="big-btn"
+onclick="location.href='viewer.html'">
+🎮 Viewer </button>
+
+<button
+class="big-btn"
+onclick="location.href='editor.html'">
+🎨 Editor </button>
+
+<button
+class="big-btn"
+onclick="location.href='upload-skin.html'">
+🎨 Загрузить скин </button>
+
+<button
+class="big-btn"
+onclick="location.href='upload-cape.html'">
+🧥 Загрузить плащ </button>
+
+<button
+class="big-btn"
+onclick="location.href='dashboard.html'">
+⬅ Главное меню </button>
+
+<button
+class="big-btn"
+onclick="logout()">
+🚪 Выйти </button>
+
+</div>
+
+</div>
+
+<script>
+
+const username =
+localStorage.getItem("username")
+
+const uuid =
+localStorage.getItem("uuid")
+
+if(username){
+
+document.getElementById("username").innerText =
+username
+
+document.getElementById("uuid").innerText =
+uuid
+
+document.getElementById("avatar").src =
+"https://mc-heads.net/avatar/" + username
+
+fetch("/capes/" + username + ".png")
+.then(r => {
+
+if(r.ok){
+
+document.getElementById("cape").innerText =
+"Есть"
+
+}else{
+
+document.getElementById("cape").innerText =
+"Нет"
+
+}
+
+})
+.catch(() => {
+
+document.getElementById("cape").innerText =
+"Нет"
+
+})
+
+}
+
+function logout(){
+
+localStorage.removeItem("username")
+localStorage.removeItem("uuid")
+
+window.location =
+"/login.html"
+
+}
+
+</script>
+
+</body>
+</html>
