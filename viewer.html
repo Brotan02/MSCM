@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+<meta charset="UTF-8">
+
+<title>Viewer</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://unpkg.com/skinview3d/bundles/skinview3d.bundle.js"></script>
+
+<style>
+
+.viewer{
+text-align:center;
+padding:30px;
+}
+
+#skin_container{
+width:450px;
+height:650px;
+margin:auto;
+}
+
+.hidden{
+display:none;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="viewer">
+
+<h1>🎮 Viewer</h1>
+
+<div id="skin_container"></div>
+
+<br>
+
+<button onclick="chooseSkin()">
+
+📁 Посмотреть с компьютера
+
+</button>
+
+<input
+type="file"
+id="fileInput"
+accept=".png"
+class="hidden">
+
+<br><br>
+
+<a href="/dashboard.html">
+
+⬅ Главное меню
+
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+const username =
+localStorage.getItem("username")
+
+const viewer =
+new skinview3d.SkinViewer({
+
+canvas:
+document.createElement("canvas"),
+
+width:450,
+
+height:650
+
+})
+
+document
+.getElementById("skin_container")
+.appendChild(viewer.canvas)
+
+viewer.zoom = 0.8
+
+viewer.animation =
+new skinview3d.WalkingAnimation()
+
+viewer.autoRotate = true
+
+if(username){
+
+viewer.loadSkin(
+"/skins/" + username + ".png"
+)
+
+viewer.loadCape(
+"/capes/" + username + ".png"
+)
+
+}
+
+function chooseSkin(){
+
+document
+.getElementById("fileInput")
+.click()
+
+}
+
+document
+.getElementById("fileInput")
+.addEventListener("change",(e)=>{
+
+const file =
+e.target.files[0]
+
+if(!file)return
+
+const url =
+URL.createObjectURL(file)
+
+viewer.loadSkin(url)
+
+})
+
+</script>
+
+</body>
+</html>

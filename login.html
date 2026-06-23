@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Вход</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🔑 Вход</h1>
+
+<input
+id="username"
+placeholder="Ник">
+
+<input
+id="password"
+type="password"
+placeholder="Пароль">
+
+<button onclick="login()">
+
+Войти
+
+</button>
+
+<p id="msg"></p>
+
+<br>
+
+<a href="/register.html">
+
+Создать аккаунт
+
+</a>
+
+<br>
+<a href="/">⬅ Назад</a>
+
+</div>
+
+<script>
+
+async function login(){
+
+const username =
+document.getElementById("username").value
+
+const password =
+document.getElementById("password").value
+
+const response =
+await fetch("/api/login",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+username,
+password
+
+})
+
+})
+
+const data =
+await response.json()
+
+if(data.success){
+
+localStorage.setItem(
+"username",
+data.username
+)
+
+localStorage.setItem(
+"uuid",
+data.uuid
+)
+
+window.location =
+"/dashboard.html"
+
+}else{
+
+document.getElementById("msg")
+.innerText = data.message
+
+}
+
+}
+
+</script>
+
+</body>
+</html>

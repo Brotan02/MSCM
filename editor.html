@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Редактор скинов</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+.editor{
+text-align:center;
+padding:30px;
+}
+
+canvas{
+border:3px solid white;
+image-rendering:pixelated;
+width:512px;
+height:512px;
+cursor:crosshair;
+}
+
+.tools{
+margin:20px;
+}
+
+input[type=color]{
+width:80px;
+height:50px;
+}
+
+button{
+padding:12px 20px;
+margin:5px;
+font-size:18px;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="editor">
+
+<h1>🎨 Редактор скинов</h1>
+
+<div class="tools">
+
+<input type="color" id="color" value="#ff0000">
+
+<button onclick="clearCanvas()">
+🗑 Очистить
+</button>
+
+<button onclick="saveSkin()">
+💾 Скачать PNG
+</button>
+
+</div>
+
+<canvas
+id="skin"
+width="64"
+height="64">
+</canvas>
+
+<br><br>
+
+<a href="/dashboard.html">
+⬅ Главное меню
+</a>
+
+</div>
+
+<script>
+
+const canvas =
+document.getElementById("skin")
+
+const ctx =
+canvas.getContext("2d")
+
+ctx.fillStyle = "#ffffff"
+ctx.fillRect(0,0,64,64)
+
+let drawing = false
+
+canvas.addEventListener("mousedown",()=>{
+drawing=true
+})
+
+canvas.addEventListener("mouseup",()=>{
+drawing=false
+})
+
+canvas.addEventListener("mouseleave",()=>{
+drawing=false
+})
+
+canvas.addEventListener("mousemove",(e)=>{
+
+if(!drawing) return
+
+const rect =
+canvas.getBoundingClientRect()
+
+const x =
+Math.floor(
+(e.clientX-rect.left)
+/
+(rect.width/64)
+)
+
+const y =
+Math.floor(
+(e.clientY-rect.top)
+/
+(rect.height/64)
+)
+
+ctx.fillStyle =
+document.getElementById("color").value
+
+ctx.fillRect(x,y,1,1)
+
+})
+
+function clearCanvas(){
+
+ctx.fillStyle="#ffffff"
+ctx.fillRect(0,0,64,64)
+
+}
+
+function saveSkin(){
+
+const link =
+document.createElement("a")
+
+link.download="skin.png"
+
+link.href=
+canvas.toDataURL()
+
+link.click()
+
+}
+
+</script>
+
+</body>
+</html>

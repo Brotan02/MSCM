@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Регистрация</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🚀 Регистрация</h1>
+
+<input
+id="username"
+placeholder="Ник">
+
+<input
+id="password"
+type="password"
+placeholder="Пароль">
+
+<button onclick="register()">
+
+Создать аккаунт
+
+</button>
+
+<p id="msg"></p>
+
+<br>
+
+<a href="/login.html">
+
+Уже есть аккаунт?
+
+</a>
+
+<br>
+<a href="/">⬅ Назад</a>
+
+</div>
+
+<script>
+
+async function register(){
+
+const username =
+document.getElementById("username").value
+
+const password =
+document.getElementById("password").value
+
+const response =
+await fetch("/api/register",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+username,
+password
+
+})
+
+})
+
+const data =
+await response.json()
+
+document.getElementById("msg")
+.innerText = data.message
+
+}
+
+</script>
+
+</body>
+</html>
